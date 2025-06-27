@@ -1,3 +1,14 @@
+## can-utils
+``` bash
+sudo apt-get install can-utils
+
+sudo ifconfig can0 down
+sudo ip link set can0 type can bitrate 1000000
+sudo ifconfig can0 up
+
+candump can0
+```
+
 ## 실행화면
 ![20250627_23h59m41s_grim](https://github.com/user-attachments/assets/d9f17d49-e313-4217-afc7-67f78d8a97e3)
 
