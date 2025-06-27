@@ -8,3 +8,5 @@
 ### CSV 파일 예시
 ![image](https://github.com/user-attachments/assets/20e1cfdb-5ede-49be-a5d9-ed337c50d58b)
 
+## 와이어링
+<img width="740" alt="image" src="https://github.com/user-attachments/assets/280ec095-001e-42f3-a4fc-f9d89b797b67" />
