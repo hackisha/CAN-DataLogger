@@ -11,7 +11,7 @@ import os
 
 # Firebase 설정
 FIREBASE_URL    = "https://emucanlogger-default-rtdb.firebaseio.com/logs"
-FIREBASE_SECRET = "dWFD9MwF7H94IcBf0c2ELZ4pu7S9gr4CYM46koJL"
+FIREBASE_SECRET = ""
 
 # CAN ID 정의
 EMU_ID_600 = 0x600  # RPM, TPS, IAT, MAP
