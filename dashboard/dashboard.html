@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>무한질주 대시보드</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #5a5a5a, #2f2f2f);
+      color: #a0c8ff;
+      font-family: 'Roboto Mono', monospace, 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .dashboard {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .center-section {
+      position: relative;
+      width: 1000px;
+      background: linear-gradient(145deg, #3a3a3a, #222222);
+      border-radius: 20px;
+      border: 1.5px solid #4a4a4a;
+      padding: 30px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: none;
+    }
+
+    .gauges-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .gauge {
+      background: #11223b;
+      border-radius: 15px;
+      padding: 15px 20px;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.7), inset 0 0 8px rgba(0, 123, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid #2050c7;
+      transition: background 0.3s ease;
+    }
+
+    .gauge:hover {
+      background: #16345e;
+    }
+
+    .gauge img {
+      width: 48px;
+      height: 38px;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 0 3px #68a0ff);
+    }
+
+    .gauge-label {
+      font-weight: 700;
+      font-size: 16px;
+      color: #9bcfff;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .gauge-bar-container {
+      width: 100%;
+      height: 10px;
+      background: #203958;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: inset 0 0 5px #144172;
+      position: relative;
+    }
+
+    .gauge-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 8px;
+      transition: width 0.4s ease, background 0.4s ease;
+    }
+
+    .gauge-bar-labels {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #5588cc;
+      margin-top: 6px;
+      user-select: none;
+    }
+
+    .gear {
+      font-size: 110px;
+      font-weight: 800;
+      color: #3399ff;
+      margin-bottom: 18px;
+      text-shadow: 0 0 15px #3399ffaa;
+    }
+
+    .rpm {
+      font-size: 48px;
+      font-weight: 600;
+      color: #aad6ff;
+      margin-bottom: 25px;
+      letter-spacing: 1.2px;
+      text-shadow: 0 0 6px #5da6ffbb;
+    }
+
+    .rpm-bar-container {
+      width: 600px;
+      height: 24px;
+      background: #1b3761;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: inset 0 0 6px #2a5ab1;
+      margin-bottom: 18px;
+    }
+
+    .rpm-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 14px;
+      transition: width 0.3s ease;
+    }
+
+    .rpm-labels {
+      width: 600px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #7ea6d6;
+      margin-bottom: 28px;
+      user-select: none;
+    }
+
+    .speed-display {
+      position: absolute;
+      bottom: 24px;
+      right: 30px;
+      font-size: 40px;
+      font-weight: 700;
+      background: #444b54;
+      color: #d0d4d9;
+      padding: 14px 28px;
+      border-radius: 16px;
+      box-shadow: 0 0 16px #a6acb1bb, inset 0 0 12px #6c737a;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+
+    .tagline-banner {
+      margin-top: 14px;
+      background: rgba(50, 105, 185, 0.3);
+      color: #cde4ff;
+      font-size: 22px;
+      font-weight: 400;
+      padding: 14px 36px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(80, 135, 225, 0.5);
+      letter-spacing: 3px;
+      box-shadow: 0 0 20px #4c88ff55;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="center-section">
+      <div class="gauges-grid">
+        <div class="gauge"><img src="./img.png" alt="CLT1" /><div class="gauge-label">CLT1</div><div class="gauge-bar-container"><div class="gauge-bar" id="bar0"></div></div><div class="gauge-bar-labels"><span>0°</span><span>70°</span><span>130°</span></div></div>
+        <div class="gauge"><img src="./img.png" alt="EOT IN" /><div class="gauge-label">EOT IN</div><div class="gauge-bar-container"><div class="gauge-bar" id="bar1"></div></div><div class="gauge-bar-labels"><span>0°</span><span>70°</span><span>130°</span></div></div>
+        <div class="gauge"><img src="./img.png" alt="IAT" /><div class="gauge-label">IAT</div><div class="gauge-bar-container"><div class="gauge-bar" id="bar2"></div></div><div class="gauge-bar-labels"><span>0°</span><span>70°</span><span>130°</span></div></div>
+        <div class="gauge"><img src="./img.png" alt="CLT2" /><div class="gauge-label">CLT2</div><div class="gauge-bar-container"><div class="gauge-bar" id="bar3"></div></div><div class="gauge-bar-labels"><span>0°</span><span>70°</span><span>130°</span></div></div>
+        <div class="gauge"><img src="./img.png" alt="EOT OUT" /><div class="gauge-label">EOT OUT</div><div class="gauge-bar-container"><div class="gauge-bar" id="bar4"></div></div><div class="gauge-bar-labels"><span>0°</span><span>70°</span><span>130°</span></div></div>
+        <div class="gauge"><img src="./img.png" alt="TPS" /><div class="gauge-label">TPS</div><div class="gauge-bar-container"><div class="gauge-bar" id="bar5"></div></div><div class="gauge-bar-labels"><span>0%</span><span>50%</span><span>100%</span></div></div>
+      </div>
+
+      <div class="gear" id="gear">N</div>
+      <div class="rpm" id="rpm">0 RPM</div>
+      <div class="rpm-bar-container"><div class="rpm-bar" id="rpmBar"></div></div>
+      <div class="rpm-labels">
+        <span>0</span><span>1000</span><span>2000</span><span>3000</span>
+        <span>4000</span><span>5000</span><span>6000</span><span>7000</span>
+        <span>8000</span><span>9000</span><span>10000</span><span>11000</span>
+        <span>12000</span><span>13000</span>
+      </div>
+      <div class="speed-display" id="speed">0 km/h</div>
+      <div class="tagline-banner">무한질주</div>
+    </div>
+  </div>
+
+  <!-- Firebase 연동 스크립트 -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA44pnRn5t073UuSOPw3mkVwjvCLP4ZzJU",
+      authDomain: "emucanlogger.firebaseapp.com",
+      databaseURL: "https://emucanlogger-default-rtdb.firebaseio.com",
+      projectId: "emucanlogger",
+      storageBucket: "emucanlogger.firebasestorage.app",
+      messagingSenderId: "289716936070",
+      appId: "1:289716936070:web:8502e0f2c69ae362616007"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const sensorMap = ['CLT1_C', 'EOT_IN_C', 'IAT_C', 'CLT2_C', 'EOT_OUT_C', 'TPS_percent'];
+    const bars = sensorMap.map((_, i) => document.getElementById(`bar${i}`));
+    const gearEl = document.getElementById("gear");
+    const rpmEl = document.getElementById("rpm");
+    const rpmBar = document.getElementById("rpmBar");
+    const speedEl = document.getElementById("speed");
+
+    function update(data) {
+      sensorMap.forEach((key, i) => {
+        const val = Number(data[key]);
+        if (!isNaN(val)) {
+          const max = key === 'TPS_percent' ? 100 : 130;
+          const percent = Math.min(val / max * 100, 100);
+          bars[i].style.width = percent + '%';
+          bars[i].style.background = 'linear-gradient(to right, #00ff99, #0077ff)';
+        }
+      });
+
+      rpmEl.textContent = (data.RPM ?? 0) + ' RPM';
+      gearEl.textContent = data.Gear ?? 'N';
+      speedEl.textContent = (data.Speed_kmh ?? 0) + ' km/h';
+      rpmBar.style.width = Math.min((data.RPM ?? 0) / 13000 * 100, 100) + '%';
+      rpmBar.style.background = 'linear-gradient(to right, #ff4f4f, #ffa500)';
+    }
+
+    db.ref("logs").limitToLast(1).on("child_added", (snapshot) => {
+      const data = snapshot.val();
+      update(data);
+    });
+  </script>
+</body>
+</html>

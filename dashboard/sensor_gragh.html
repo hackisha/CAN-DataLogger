@@ -1,0 +1,120 @@
+<!-- graph.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>센서 그래프 대시보드</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #5a5a5a, #2f2f2f);
+      color: #a0c8ff;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(2, 460px);
+      grid-template-rows: repeat(2, 320px);
+      gap: 20px 30px;
+      justify-content: center;
+      padding: 40px;
+      width: 960px;
+      margin: 0 auto;
+    }
+
+    .sensor-box {
+      background: #11223b;
+      border-radius: 16px;
+      padding: 20px;
+      width: 440px;
+      height: 300px;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.7), inset 0 0 8px rgba(0, 123, 255, 0.3);
+      border: 1px solid #2050c7;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sensor-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #9bcfff;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    canvas {
+      background: #1a2a44;
+      border-radius: 12px;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="sensor-box"><div class="sensor-title">CLT</div><canvas id="cltChart"></canvas></div>
+    <div class="sensor-box"><div class="sensor-title">EOT IN</div><canvas id="eotInChart"></canvas></div>
+    <div class="sensor-box"><div class="sensor-title">EOT OUT</div><canvas id="eotOutChart"></canvas></div>
+    <div class="sensor-box"><div class="sensor-title">TPS</div><canvas id="tpsChart"></canvas></div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA44pnRn5t073UuSOPw3mkVwjvCLP4ZzJU",
+      authDomain: "emucanlogger.firebaseapp.com",
+      databaseURL: "https://emucanlogger-default-rtdb.firebaseio.com",
+      projectId: "emucanlogger",
+      storageBucket: "emucanlogger.firebasestorage.app",
+      messagingSenderId: "289716936070",
+      appId: "1:289716936070:web:8502e0f2c69ae362616007"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function createChart(ctx, label, color) {
+      return new Chart(ctx, {
+        type: 'line',
+        data: { labels: [], datasets: [{ label, data: [], borderColor: color, backgroundColor: 'rgba(0, 123, 255, 0.1)', tension: 0.3, pointRadius: 0, fill: true }] },
+        options: {
+          responsive: true, animation: false,
+          scales: {
+            x: { ticks: { color: '#88bbff' }, grid: { color: '#2e4769' } },
+            y: { ticks: { color: '#88bbff' }, grid: { color: '#2e4769' } }
+          },
+          plugins: { legend: { labels: { color: '#aad6ff', font: { size: 12 } } } }
+        }
+      });
+    }
+
+    const cltChart = createChart(document.getElementById('cltChart'), 'CLT °C', '#4cc9f0');
+    const eotInChart = createChart(document.getElementById('eotInChart'), 'EOT IN °C', '#f72585');
+    const eotOutChart = createChart(document.getElementById('eotOutChart'), 'EOT OUT °C', '#b5179e');
+    const tpsChart = createChart(document.getElementById('tpsChart'), 'TPS %', '#00ff99');
+
+    function addData(chart, value) {
+      const now = new Date().toLocaleTimeString();
+      chart.data.labels.push(now);
+      chart.data.datasets[0].data.push(value);
+      if (chart.data.labels.length > 20) {
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+      }
+      chart.update();
+    }
+    db.ref("logs").limitToLast(1).on("child_added", (snapshot) => {
+      const data = snapshot.val();
+      if ("CLT1_C" in data) addData(cltChart, data.CLT1_C);
+      if ("EOT_IN_C" in data) addData(eotInChart, data.EOT_IN_C);
+      if ("EOT_OUT_C" in data) addData(eotOutChart, data.EOT_OUT_C);
+      if ("TPS_percent" in data) addData(tpsChart, data.TPS_percent);
+    });
+  </script>
+</body>
+</html>
