@@ -14,7 +14,8 @@ usbipd bind --busid [wsl에 연결할 장치의 BUSID ex)1-3 ] //성공시 STATE
 usbipd attach --wsl --busid [연결할 장치의 BUSID]
 ```
 
-## can-utils 사용법
+---
+## can-utils 사용법 (https://github.com/linux-can/can-utils)
 ``` bash
 sudo ifconfig can0 down
 sudo ip link set can0 type can bitrate 1000000 //비트레이트는 사용할 CAN BUS에 맞게 설정
@@ -22,7 +23,7 @@ sudo ifconfig can0 up
 
 candump can0 //성공시 can메시지가 넘어오는 것을 볼 수 있음.
 ```
-
+---
 ## WEB UI
 ### Main Dashboard
 ![image](https://github.com/user-attachments/assets/2db50bff-2fe6-4b85-9293-2717f42b307e)
