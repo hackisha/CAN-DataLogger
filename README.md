@@ -12,7 +12,7 @@ usbipd list //현재 연결된 장치 확인
 ```
 ![image](https://github.com/user-attachments/assets/14f866a0-5d8c-4209-a59e-9be43a8ebf99)
 
---- bash
+``` bash
 usbipd bind --busid [wsl에 연결할 장치의 BUSID ex)1-3 ] //성공시 STATE가 Shared로 되어야 함
 
 usbipd attach --wsl --busid [연결할 장치의 BUSID]
